@@ -2,7 +2,7 @@ package main
 
 import "core:fmt"
 import "core:strings"
-import tl "libs:taglib"
+import tl "libs:taglib_bindings"
 import ma "vendor:miniaudio"
 
 SoundFileInfo :: struct {

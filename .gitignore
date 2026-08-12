@@ -5,7 +5,7 @@ src.bin
 libs/tinyfiledialogs/tinyfiledialogs.o
 libs/tinyfiledialogs/libtinyfiledialogs.a
 libs/tinyfiledialogs/dll_cs_lua_R_fortran_pascal/
-libs/taglib/libtag_c.a
+libs/taglib_bindings/libtag_c.a
 .DS_Store
 .vscode/
 **/out/
