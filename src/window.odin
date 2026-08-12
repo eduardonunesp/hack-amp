@@ -8,6 +8,10 @@ import rl "vendor:raylib"
 WINDOW_FPS :: 60
 WINDOW_CLS :: rl.BLACK
 
+// Height of the header strip that can drag the borderless window.
+// Must match the ui_main_display row height.
+HEADER_DRAG_H :: 50
+
 Window :: struct {
 	title         : string,
 	width, height : i32,
@@ -51,6 +55,7 @@ win_main :: proc() {
 
 	rlmu.begin_scope()
 	ui_main()
+	win_drag()
 }
 
 win_should_close :: proc() -> bool {

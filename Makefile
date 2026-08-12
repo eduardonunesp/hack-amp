@@ -1,5 +1,5 @@
 # External static libs the Odin `foreign import` directives link against.
-STATIC_LIBS := libs/tinyfiledialogs/libtinyfiledialogs.a libs/taglib/libtag_c.a
+STATIC_LIBS := libs/tinyfiledialogs/libtinyfiledialogs.a libs/taglib_bindings/libtag_c.a
 
 .PHONY: check
 check: $(STATIC_LIBS)
@@ -7,11 +7,11 @@ check: $(STATIC_LIBS)
 
 .PHONY: run
 run: $(STATIC_LIBS)
-	odin run ./src -collection:libs=libs -debug 
+	odin run ./src -collection:libs=libs -debug -out:bin/hack-amp
 
 .PHONY: build
 build: $(STATIC_LIBS)
-	odin build ./src -collection:libs=libs -debug -out:bin/main
+	odin build ./src -collection:libs=libs -debug -out:bin/hack-amp
 
 .PHONY: release
 release: $(STATIC_LIBS)
@@ -28,7 +28,13 @@ libs/tinyfiledialogs/libtinyfiledialogs.a: libs/tinyfiledialogs/tinyfiledialogs.
 # TagLib's own CMake to build the C wrapper (`tag_c`) as a static archive.
 # Only MPEG/ID3 support is enabled — everything else is trimmed to keep the
 # archive small and avoid extra dependencies. The `foreign import` in
-# libs/taglib/taglib.odin links against libtag_c.a.
+# libs/taglib_bindings/taglib.odin links against libtag_c.a (which must sit
+# next to the bindings file; Odin resolves the path relative to it).
+#
+# TagLib is a git submodule (pinned to v2.3.1) at libs/taglib;
+# `git submodule update --init --recursive` fetches it on a fresh clone.
+TAGLIB_SRC_DIR := libs/taglib
+TAGLIB_BINDINGS_DIR := libs/taglib_bindings
 TAGLIB_CMAKE_DIR := bin/taglib-build
 TAGLIB_CMAKE_FLAGS := \
 	-DBUILD_SHARED_LIBS=OFF \
@@ -50,9 +56,13 @@ TAGLIB_CMAKE_FLAGS := \
 	-DWITH_APE=OFF \
 	-DCMAKE_BUILD_TYPE=Release
 
-libs/taglib/libtag_c.a: libs/taglib/bindings/c/tag_c.cpp
+# Fetch the TagLib submodule (and its own utfcpp submodule) on demand.
+$(TAGLIB_SRC_DIR)/CMakeLists.txt:
+	git submodule update --init --recursive
+
+$(TAGLIB_BINDINGS_DIR)/libtag_c.a: $(TAGLIB_SRC_DIR)/CMakeLists.txt
 	mkdir -p $(TAGLIB_CMAKE_DIR)
-	cmake -S libs/taglib -B $(TAGLIB_CMAKE_DIR) $(TAGLIB_CMAKE_FLAGS)
+	cmake -S $(TAGLIB_SRC_DIR) -B $(TAGLIB_CMAKE_DIR) $(TAGLIB_CMAKE_FLAGS)
 	cmake --build $(TAGLIB_CMAKE_DIR) --target tag_c -j
 	# tag_c links PRIVATELY against the core `tag` archive, so libtag_c.a
 	# only holds tag_c.cpp.o and has unresolved symbols. Merge the two
@@ -62,10 +72,10 @@ libs/taglib/libtag_c.a: libs/taglib/bindings/c/tag_c.cpp
 
 .PHONY: clean
 clean:
-	rm -rf *.o *.exe main bin src.bin src.bin.dSYM
+	rm -rf *.o *.exe hack-amp src.bin src.bin.dSYM 
 	rm -rf libs/tinyfiledialogs/tinyfiledialogs.o
 	rm -rf libs/tinyfiledialogs/libtinyfiledialogs.a
-	rm -rf libs/taglib/libtag_c.a
+	rm -rf libs/taglib_bindings/libtag_c.a
 	rm -rf $(TAGLIB_CMAKE_DIR)
 	mkdir bin
 	touch bin/.gitkeep
