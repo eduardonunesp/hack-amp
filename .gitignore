@@ -5,3 +5,6 @@ src.bin
 libs/tinyfiledialogs/tinyfiledialogs.o
 libs/tinyfiledialogs/libtinyfiledialogs.a
 libs/taglib/libtag_c.a
+.DS_Store
+.vscode/
+**/out/
