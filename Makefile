@@ -77,5 +77,5 @@ clean:
 	rm -rf libs/tinyfiledialogs/libtinyfiledialogs.a
 	rm -rf libs/taglib_bindings/libtag_c.a
 	rm -rf $(TAGLIB_CMAKE_DIR)
-	mkdir bin
+	mkdir -p bin
 	touch bin/.gitkeep
