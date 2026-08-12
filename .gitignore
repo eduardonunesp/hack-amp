@@ -1,0 +1,7 @@
+bin
+main
+src.bin.dSYM
+src.bin
+libs/tinyfiledialogs/tinyfiledialogs.o
+libs/tinyfiledialogs/libtinyfiledialogs.a
+libs/taglib/libtag_c.a

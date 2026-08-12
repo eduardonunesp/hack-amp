@@ -1,0 +1,14 @@
+{
+    "$schema": "https://raw.githubusercontent.com/DanielGavin/ols/master/misc/ols.schema.json",
+    "enable_document_symbols": true,
+    "enable_hover": true,
+    "enable_snippets": true,
+    "enable_inlay_hints_params": true,
+    "enable_inlay_hints_default_params": true,
+    "collections": [
+        {
+            "name": "libs",
+            "path": "libs"
+        }
+    ]
+}

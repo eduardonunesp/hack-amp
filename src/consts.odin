@@ -1,0 +1,7 @@
+package main
+
+WINDOW_TITLE      :: "Hack-AMP"
+WINDOW_WIDTH      :: 400
+WINDOW_HEIGHT     :: 600
+WINDOW_MIN_WIDTH  :: 200
+WINDOW_MIN_HEIGHT :: 300
