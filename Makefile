@@ -7,11 +7,11 @@ check: $(STATIC_LIBS)
 
 .PHONY: run
 run: $(STATIC_LIBS)
-	odin run ./src -collection:libs=libs -debug 
+	odin run ./src -collection:libs=libs -debug -out:bin/hack-amp
 
 .PHONY: build
 build: $(STATIC_LIBS)
-	odin build ./src -collection:libs=libs -debug -out:bin/main
+	odin build ./src -collection:libs=libs -debug -out:bin/hack-amp
 
 .PHONY: release
 release: $(STATIC_LIBS)
@@ -72,7 +72,7 @@ $(TAGLIB_BINDINGS_DIR)/libtag_c.a: $(TAGLIB_SRC_DIR)/CMakeLists.txt
 
 .PHONY: clean
 clean:
-	rm -rf *.o *.exe main bin src.bin src.bin.dSYM
+	rm -rf *.o *.exe hack-amp src.bin src.bin.dSYM 
 	rm -rf libs/tinyfiledialogs/tinyfiledialogs.o
 	rm -rf libs/tinyfiledialogs/libtinyfiledialogs.a
 	rm -rf libs/taglib_bindings/libtag_c.a
